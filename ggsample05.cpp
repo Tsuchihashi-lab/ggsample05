@@ -50,6 +50,22 @@ void app()
   // 頂点配列オブジェクトの作成
   const GLuint vao(createObject(vertices, p0, lines, e));
 
+  // in 変数のインデックスの検索
+  GLint p1Loc = glGetAttribLocation(program, "p1");
+
+  // p1 の頂点バッファオブジェクトの作成
+  GLuint p1Buf;
+  glGenBuffers(1, &p1Buf);
+  glBindBuffer(GL_ARRAY_BUFFER, p1Buf);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat[3]) * vertices, p1, GL_STATIC_DRAW);
+
+  // 描画に使う頂点配列オブジェクトの指定
+  glBindVertexArray(vao);
+
+  // 頂点バッファオブジェクトを in (attribute) 変数 p1 で参照する
+  glVertexAttribPointer(p1Loc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(p1Loc);
+
   // 平行移動の経路
   static const float route[][3] =
   {
